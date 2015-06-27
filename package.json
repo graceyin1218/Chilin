@@ -1,0 +1,11 @@
+{
+	"dependencies":
+	{
+		"express": "4.12.4",
+		"jade": "1.11.0",
+		"mongodb": "2.0.35",
+		"mongodb-core": "1.2.2",
+		"readable-stream": "1.0.31",
+		"es6-promise": "2.1.1"
+	}
+}
