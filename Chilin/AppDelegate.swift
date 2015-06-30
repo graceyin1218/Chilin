@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Parse
+import Bolts
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +18,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+            //Parse.enableLocalDatastore()
+        Parse.setApplicationId("6NwZR4cwIpBICOO0bTwJNk9PfeKF2ka7o4Y6kxPf", clientKey: "8EKgXfp9RS7ZcqNmc3I0NX2Sr2fg9ANJaHtCSulQ")
+
+        
+//will change
+        var tableVC: ProductTableViewController = ProductTableViewController(className: "Products")
+        tableVC.title = "Products"
+        
+//will change
+        UINavigationBar.appearance().tintColor = UIColor(red: 0.05, green: 0.47, blue: 0.91, alpha: 1.0)
+        UINavigationBar.appearance().barTintColor = UIColor(red: 0.05, green: 0.47, blue: 0.91, alpha: 1.0)
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        
+        var navigationVC: UINavigationController = UINavigationController(rootViewController: tableVC)
+        
+        let frame = UIScreen.mainScreen().bounds
+        window = UIWindow(frame: frame)
+        
+        window!.rootViewController = navigationVC
+        window!.makeKeyAndVisible()
+        
         return true
     }
 
