@@ -1,4 +1,16 @@
-# Noname
+# Chilin
+
+
+Todo:
+- photo upload
+- PFSessions?
+
+
+
+
+
+
+Original::
 
 iOS 8 app that can interact with a MongoDB database.
 
