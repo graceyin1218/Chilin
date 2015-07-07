@@ -4,7 +4,8 @@
 Todo:
 - photo upload
 - PFSessions?
-
+- Comments
+- login screen
 
 
 
