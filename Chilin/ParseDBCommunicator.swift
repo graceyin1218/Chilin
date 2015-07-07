@@ -9,9 +9,14 @@
 import Foundation
 import UIKit
 import Parse
+import ParseUI
+import Bolts
 
 // This is the only class that communicates directly with the Parse Database.
+//with a few exceptions... (image handling in ProductTableViewCell)
 
+// remember:
+    // UTC TIMEZONE
 
 class ParseDBCommunicator {
     
@@ -22,6 +27,8 @@ class ParseDBCommunicator {
     
     init ()
     {
+        Parse.setApplicationId("6NwZR4cwIpBICOO0bTwJNk9PfeKF2ka7o4Y6kxPf", clientKey: "8EKgXfp9RS7ZcqNmc3I0NX2Sr2fg9ANJaHtCSulQ")
+        
         //check for cached user
         
         var currentUser = PFUser.currentUser()
@@ -40,56 +47,35 @@ class ParseDBCommunicator {
     
 // Users
     
-    func createUser(u: String, p: String, e: String) -> (worked: Bool, error: String?)
+    func createUser(u: String, _ p: String, _ e: String) -> Bool
     {
         var user = PFUser()
         user.username = u
         user.password = p
         user.email = e
         
-        var worked = false
-        var errorString: String? = nil
-        
-        user.signUpInBackgroundWithBlock {
-            (succeeded: Bool, error: NSError?) -> Void in
-            if let error = error
-            {
-                errorString = error.userInfo?["error"] as? String
-            }
-            else
-            {
-                worked = true
-                self.username = u
-                self.loggedin = true
-            }
-        }
-        return (worked, errorString)
-    }
-    
-    func login(username: String, password: String) -> Bool
-    {
-        var worked: Bool = false
-        
-        PFUser.logInWithUsernameInBackground(username, password: password) {
-            (user: PFUser?, error: NSError?) -> Void in
-            if user != nil
-            {
-                self.username = username
-                self.loggedin = true
-                worked = true
-            }
-            else
-            {
-                worked = false
-            }
-        }
+        var worked = user.signUp()
         
         return worked
     }
     
-// can only change if PFUser is obtained through authenticated means (such as currentUser() )
+    func login(username: String, _ password: String) -> Bool
+    {
+        var worked: Bool = false
+        
+        var person = PFUser.logInWithUsername(username, password: password)
+        
+        if person == nil
+        {
+            return false
+        }
+        
+        return true
+    }
     
-    func changePassword(currentPass: String, newPass: String) -> Bool
+// can only change if PFUser is obtained through authenticated means (such as currentUser() )
+//TEST
+    func changePassword(currentPass: String, _ newPass: String) -> Bool
     {
         var user = PFUser.currentUser()
         if user != nil
@@ -105,7 +91,7 @@ class ParseDBCommunicator {
         }
         return false
     }
-    
+//TEST
     func changeEmail(newEmail: String) -> Bool
     {
         var user = PFUser.currentUser()
@@ -118,7 +104,7 @@ class ParseDBCommunicator {
         return false
 
     }
-    
+//TEST (though I doubt there'll be any issues)
     func logout()
     {
         PFUser.logOut()
@@ -126,72 +112,161 @@ class ParseDBCommunicator {
         loggedin = false
     }
     
+//TEST
     func forgotPassword(username: String) -> Bool
     {
         var query = PFQuery(className: "User")
         query.whereKey("username", equalTo: username)
         
-        var worked = false
-        var email: String? = nil
         
-        query.findObjectsInBackgroundWithBlock {
-            (users: [AnyObject]?, error: NSError?) -> Void in
-            
-            if error == nil
-            {
-                if users != nil && users!.count == 1
-                {
-                    worked = true
-                    var user = users![0] as! PFUser
-                    email = user.email
-                }
-            }
-        }
-        if worked
+        var users = query.findObjects()
+        
+        if users == nil || users!.count != 1
         {
-            PFUser.requestPasswordResetForEmail(email!)
+            return false
         }
+        PFUser.requestPasswordResetForEmail(users![0].email!!)
         
-        return worked
+        return true
     }
     
 // Products
+    //need to be logged in to upload, edit, or delete product.
     
-    func uploadProduct(name: String) -> Bool
+    var currentRequestName: String? = nil
+
+    func uploadProduct(name: String, _ image: UIImage?, _ rating: String?) -> Bool
     {
+        currentRequestName = name
+        
         //if name exists, don't create
+        var query = PFQuery(className: "Products")
+        query.whereKey("name", equalTo: name)
         
+        var objects = query.findObjects()
+            
+        if objects == nil || objects!.count != 0
+        {
+            return false
+        }
+        
+        var newObject = PFObject(className: "Products")
+        
+        newObject["name"] = name
+        newObject["creator"] = PFUser.currentUser()
+        
+        if let image = image
+        {
+            var imageData = NSData(data: UIImageJPEGRepresentation(image, 1))
+            newObject["image"] = PFFile(data: imageData)
+        }
+        if let rating = rating
+        {
+            newObject["rating"] = (rating as NSString).doubleValue
+        }
+        
+        newObject.saveInBackground()
+
+        return true
+    }
+    
+    func editProduct(name: String?, _ image: UIImage?) -> Bool
+    {
         
         return true
     }
     
-    func uploadProduct(name: String, image: UIImage) -> Bool
+//TEST
+    func getProduct(name: String) -> (image: UIImage?, rating: String?)
     {
-        uploadProduct(name)
+        currentRequestName = name
         
-        return true
+        var image: UIImage? = nil
+        var rating: String? = nil
+        
+        let qos = Int(QOS_CLASS_USER_INITIATED.value)
+        dispatch_async(dispatch_get_global_queue(qos, 0)) {() -> Void in
+        
+            var query = PFQuery(className: "Products")
+            query.whereKey("name", equalTo: name)
+            query.findObjectsInBackgroundWithBlock {
+                (objects: [AnyObject]?, error: NSError?) -> Void in
+                println(objects!.count)
+                if (error != nil)
+                {
+                    return
+                }
+                if (objects == nil)
+                {
+                    return
+                }
+            
+                //Should only be one object in objects
+                var product = objects![0] as! PFObject
+                var productImage = product["image"] as? PFFile
+                
+                if let productImage = productImage
+                {
+                    productImage.getDataInBackgroundWithBlock{
+                        (imageData: NSData?, error: NSError?) -> Void in
+                        if error == nil{
+                            if let imageData = imageData
+                            {
+                                image = UIImage(data: imageData)
+                            }
+                        }
+                    }
+                }
+                var rating: String? = nil
+                
+                var r: Double? = product["rating"] as? Double
+                if r != nil
+                {
+                    rating = "/(r)"
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    if (name != self.currentRequestName)
+                    {
+                        image = nil
+                        rating = nil
+                    }
+                }
+            }
+        }
+        return (image, rating)
     }
     
-    func uploadProduct(name: String, image: UIImage?, rating: String) -> Bool
+//Returns array of PFObjects that "fit" the query
+    //guaranteed that the query is something. (not nil or "")
+    //will be performed off the Main Queue.
+    
+    func getProducts(search: String) -> [PFObject]?
     {
         
-        return true
+        var query = PFQuery(className: "Products")
+//Will improve searching later
+        query.whereKey("name", containsString: search)
+        
+        var objects = query.findObjects()
+        
+        if objects == nil || objects!.count == 0
+        {
+            return nil
+        }
+        
+        return objects as? [PFObject]
     }
     
-    func uploadImage(image: UIImage) -> Bool
-    {
-        
-        return true
-    }
     
     func deleteProduct(name: String) -> Bool
     {
-        
+        return true
     }
     
     
 // Comments
     
     //still need to figure out DB representation.
+    //Use Pointers from Products to Commments and the other way around.
     
 }

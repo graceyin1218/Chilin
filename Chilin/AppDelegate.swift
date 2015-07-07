@@ -20,7 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         //Parse.enableLocalDatastore()
-        Parse.setApplicationId("6NwZR4cwIpBICOO0bTwJNk9PfeKF2ka7o4Y6kxPf", clientKey: "8EKgXfp9RS7ZcqNmc3I0NX2Sr2fg9ANJaHtCSulQ")
+//        Parse.setApplicationId("6NwZR4cwIpBICOO0bTwJNk9PfeKF2ka7o4Y6kxPf", clientKey: "8EKgXfp9RS7ZcqNmc3I0NX2Sr2fg9ANJaHtCSulQ")
+
 /*
         
 //will change
@@ -42,38 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.makeKeyAndVisible()
         
 */
+        println("app did launch")
 
-////////////////////////////Successful Image Uploading/////////////////////////
-/*
-        let imageFile = PFFile(name: "UkulelePichu", contentsAtPath: "/Users/graceyin/Desktop/UkulelePichu.jpg")
-        
-        
-        var query = PFQuery(className: "Products")
-        query.whereKey("name", equalTo:"Pichu")
-        query.findObjectsInBackgroundWithBlock
-            { (objects: [AnyObject]?, error: NSError?) -> Void in
-                if error == nil
-                {
-                    println("Successfully retrieved \(objects!.count) objects")
-                    
-                    if let objects = objects as? [PFObject]
-                    {
-                        for object in objects
-                        {
-                            object["image"] = imageFile
-                            object.saveInBackground()
-                        }
-                    }
-                }
-        }
-*/
-//////////////////////////////////////////////////////////////////////////////
-/*
-        var test = PFObject(className: "Products")
-        test["name"] = "Bulbasaur"
-        test.saveInBackground()
-*/
-//////////////////////////////////////////////////////////////////////////////
         
         return true
     }

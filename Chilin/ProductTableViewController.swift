@@ -9,38 +9,118 @@
 import Foundation
 import Parse
 import ParseUI
+import UIKit
 
-class ProductTableViewController: PFQueryTableViewController {
+class ProductTableViewController: UITableViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+    
+    let communicator = ParseDBCommunicator()
+ 
+    
+    var productsToDisplay: [PFObject]?
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+// Initializer
 
-    let cellIdentifier: String = "Cell"
-
-    override init(style:UITableViewStyle, className: String!)
+    //either initializer works. (assuming the class name changes accordingly)
+    
+    required init(coder aDecoder: NSCoder)
     {
-        super.init(style:style, className: className)
+        super.init(coder:aDecoder)
+        
+        productsToDisplay = communicator.getProducts("Pokemon")
+        if productsToDisplay != nil
+        {
+            for product in productsToDisplay!
+            {
+                println(product["name"])
+            }
+        }
+        else
+        {
+            println("nil")
+        }
+        refresh()
+    }
+/*  Initializer if this is a PFQueryTableViewController
+    required init(coder aDecoder: NSCoder)
+    {
+        //It's required...
+        super.init(coder: aDecoder)
         
         self.pullToRefreshEnabled = true
         self.paginationEnabled = false
         self.objectsPerPage = 25
+        self.parseClassName = "Product"
         
-        self.parseClassName = className
         
-//will change
-        self.tableView.rowHeight = 350
-//        self.tableView.allowsSelection = false
+        productsToDisplay = communicator.getProducts("Pokemon");
+        if productsToDisplay != nil
+        {
+        for product in productsToDisplay!
+        {
+            println(product["name"])
+        }
+        }
+        else
+        {
+            println("nil")
+        }
+    }
+*/
+    
+    override func viewDidLayoutSubviews() {
+        var viewbounds = self.view.bounds
+        var topBarOffset = self.topLayoutGuide.length
+        viewbounds.origin.y = topBarOffset * -1
+        self.view.bounds = viewbounds
     }
     
-    required init(coder aDecoder: NSCoder)
-    {
-        fatalError("NSCoding not supported")
-    }
-    
+// ViewDidLoad
     
     override func viewDidLoad()
     {
-        tableView.registerNib(UINib(nibName: "ProductTableViewCell", bundle: nil), forCellReuseIdentifier: cellIdentifier)
         super.viewDidLoad()
+        
+        self.edgesForExtendedLayout = UIRectEdge.None
+        
+        tableView.registerClass(ProductTableViewCell.self, forCellReuseIdentifier: "Cell")
+        
+        refresh()
     }
     
+    func refresh()
+    {
+        println("Refresh")
+        if !searchBar.text.isEmpty
+        {
+            println("SearchBar text: " + searchBar.text)
+            var qos = QOS_CLASS_USER_INITIATED
+            dispatch_async(dispatch_get_global_queue(Int(qos.value), 0)) { () -> Void in
+                var results = self.communicator.getProducts(self.searchBar.text)
+                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    println("Got search results")
+                    for result in results!
+                    {
+                    println(result["name"])
+                    }
+                    self.productsToDisplay = results
+                    if NSThread.isMainThread()
+                    {
+                        println("Is Main Thread")
+                    }
+                    self.tableView.reloadData()
+                    println("Reloaded table")
+                    
+                    println("TableView is...")
+                    println(self.tableView)
+                    println("TableView restorationID is...")
+                    println(self.tableView.restorationIdentifier)
+                }
+            }
+        }
+    }
+/*
     override func queryForTable() -> PFQuery {
         var query:PFQuery = PFQuery(className:self.parseClassName!)
         
@@ -49,79 +129,76 @@ class ProductTableViewController: PFQueryTableViewController {
             query.cachePolicy = PFCachePolicy.CacheThenNetwork
         }
         
-//Change Later
+        //Change Later
         query.orderByAscending("rating")
         
         return query
         
     }
+*/
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath, object: PFObject?) -> ProductTableViewCell?
+    
+// UITableViewDataSource methods
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell // ProductTableViewCell
     {
-        
-        var cell: ProductTableViewCell? = tableView.dequeueReusableCellWithIdentifier(cellIdentifier) as? ProductTableViewCell
-        
-        if (cell == nil)
+        println("TableView - cellForRowAtIndexPath")
+        var cell: ProductTableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! ProductTableViewCell
+
+        //what happens if we request more rows than we have objects?
+        if self.productsToDisplay != nil
         {
-            cell = NSBundle.mainBundle().loadNibNamed("ProductTableViewCell", owner: self, options: nil)[0] as? ProductTableViewCell
-          /*  PFTableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: cellIdentifier) */
-        }
-        if let pfObject = object
-        {
-            cell?.productNameLabel?.text = pfObject["name"] as? String
-            
-            var rating: Double? = pfObject["rating"] as? Double
-            if rating == nil
-            {
-                rating = 0
-            }
-            
-            cell?.productRatingLabel?.text = "\(rating)"
-            
-            
-/* Needs image as url
-// Eventually replace with AlamoFire
-            cell?.productImageView?.image = nil
-            if var urlString: String? = pfObject["url"] as?String
-            {
-                var url: NSURL? = NSURL(string: urlString!)
-            
-                if var url: NSURL? = NSURL(string: urlString!)
-                {
-                    var error: NSError?
-                    var request: NSURLRequest = NSURLRequest(URL: url!, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 5.0)
-                    
-                    NSOperationQueue.mainQueue().cancelAllOperations()
-                    
-                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler:
-                    {
-                            (response: NSURLResponse!, imageData: NSData!, error: NSError!) -> Void in
-                            
-                            cell?.productImageView?.image = UIImage(data: imageData)
-                    })
-                }
-            } */
-            
-//will add "NIL" image
-            var productImage: UIImage? = nil;
-            
-            let productImageFile = pfObject["image"] as! PFFile
-            
-            productImageFile.getDataInBackgroundWithBlock { (imageData: NSData?, error: NSError?) -> Void in
-                if error == nil
-                {
-                    if let imageData = imageData
-                    {
-                        productImage = UIImage(data: imageData)
-                    }
-                }
-                
-            }
-            cell?.productImageView?.image = productImage
-            
+            cell.product = self.productsToDisplay![indexPath.row]
         }
         
         return cell
     }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        println("TableView = numberOfRowsInSection")
+        if productsToDisplay == nil
+        {
+            return 0
+        }
+        return productsToDisplay!.count
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int
+    {
+        return 0
+    }
+    
+    
+// UITableViewDelegate methods
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]?
+    {
+        // bookmark
+        // what else?
+        return nil
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
+        // segue to product page!! /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+    
+    
+// UISearchBarDelegate methods
+    
+/*    func searchBarTextDidEndEditing(searchBar: UISearchBar)
+    {
+        refresh()
+    }
+*/
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        refresh()
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.text = nil
+    }
+    
 }
 

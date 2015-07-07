@@ -12,21 +12,53 @@ import ParseUI
 
 class ProductTableViewCell: PFTableViewCell {
 
-    @IBOutlet weak var productImageView: UIImageView?
-    @IBOutlet weak var productNameLabel: UILabel?
-    @IBOutlet weak var productRatingLabel: UILabel?
-    //@IBOutlet weak var productCreatorLabel: UILabel?
+    @IBOutlet weak var productNameLabel: UILabel!
     
+    @IBOutlet weak var productImageView: UIImageView!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    @IBOutlet weak var productDescription: UILabel!
+
+    
+    var product: PFObject?
+    {
+        didSet
+        {
+            println("cell didset product")
+            updateUI()
+        }
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    func updateUI()
+    {
+        productNameLabel?.text = ""
+        productImageView?.image = nil
+        productDescription?.text = ""
+        
+        if let product = self.product
+        {
+            productNameLabel.text = product["name"] as? String
+            if let description = product["description"] as? String
+            {
+                productDescription.text = description
+            }
+            
+            if let rawImage = product["image"] as? PFFile
+            {
+                rawImage.getDataInBackgroundWithBlock{
+                    (data: NSData?, error: NSError?) -> Void in
+                    if error == nil
+                    {
+                        if let data = data
+                        {
+                            self.productImageView.image = UIImage(data: data)
+                        }
+                    }
+                    
+                    
+                }
+            }
+        }
     }
+
     
 }
