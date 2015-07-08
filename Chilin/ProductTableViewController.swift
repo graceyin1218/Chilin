@@ -27,20 +27,6 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder:aDecoder)
-        
-        productsToDisplay = communicator.getProducts("Pokemon")
-        if productsToDisplay != nil
-        {
-            for product in productsToDisplay!
-            {
-                println(product["name"])
-            }
-        }
-        else
-        {
-            println("nil")
-        }
-        refresh()
     }
 /*  Initializer if this is a PFQueryTableViewController
     required init(coder aDecoder: NSCoder)
@@ -84,38 +70,19 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
         
         self.edgesForExtendedLayout = UIRectEdge.None
         
-        tableView.registerClass(ProductTableViewCell.self, forCellReuseIdentifier: "Cell")
-        
         refresh()
     }
     
     func refresh()
     {
-        println("Refresh")
         if !searchBar.text.isEmpty
         {
-            println("SearchBar text: " + searchBar.text)
             var qos = QOS_CLASS_USER_INITIATED
             dispatch_async(dispatch_get_global_queue(Int(qos.value), 0)) { () -> Void in
                 var results = self.communicator.getProducts(self.searchBar.text)
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                    println("Got search results")
-                    for result in results!
-                    {
-                    println(result["name"])
-                    }
                     self.productsToDisplay = results
-                    if NSThread.isMainThread()
-                    {
-                        println("Is Main Thread")
-                    }
                     self.tableView.reloadData()
-                    println("Reloaded table")
-                    
-                    println("TableView is...")
-                    println(self.tableView)
-                    println("TableView restorationID is...")
-                    println(self.tableView.restorationIdentifier)
                 }
             }
         }
@@ -142,9 +109,8 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell // ProductTableViewCell
     {
-        println("TableView - cellForRowAtIndexPath")
         var cell: ProductTableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! ProductTableViewCell
-
+        
         //what happens if we request more rows than we have objects?
         if self.productsToDisplay != nil
         {
@@ -156,7 +122,6 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        println("TableView = numberOfRowsInSection")
         if productsToDisplay == nil
         {
             return 0
@@ -166,7 +131,7 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
-        return 0
+        return 1
     }
     
     
@@ -178,12 +143,19 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
         // what else?
         return nil
     }
+   
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
         // segue to product page!! /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
     
+// Prepare for Segue
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get new view controller using segue.destinationViewController
+        // Pass selected object to new view controller
+    }
+
     
 // UISearchBarDelegate methods
     

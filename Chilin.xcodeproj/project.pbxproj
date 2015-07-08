@@ -21,6 +21,8 @@
 		3FBD7ADD1B487B29009E291E /* libPods-Parse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FBD7ADC1B487B29009E291E /* libPods-Parse.a */; };
 		3FBD7ADF1B487B2C009E291E /* libPods-ParseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FBD7ADE1B487B2C009E291E /* libPods-ParseUI.a */; };
 		3FBD7AE11B487B2F009E291E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FBD7AE01B487B2F009E291E /* libPods.a */; };
+		3FBD7AE31B4C5323009E291E /* TestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD7AE21B4C5323009E291E /* TestTableViewController.swift */; };
+		3FBD7AE51B4C5735009E291E /* TestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBD7AE41B4C5735009E291E /* TestTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +76,8 @@
 		3FBD7ADC1B487B29009E291E /* libPods-Parse.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Parse.a"; path = "Pods/../build/Debug-iphoneos/libPods-Parse.a"; sourceTree = "<group>"; };
 		3FBD7ADE1B487B2C009E291E /* libPods-ParseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-ParseUI.a"; path = "Pods/../build/Debug-iphoneos/libPods-ParseUI.a"; sourceTree = "<group>"; };
 		3FBD7AE01B487B2F009E291E /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/../build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		3FBD7AE21B4C5323009E291E /* TestTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTableViewController.swift; sourceTree = "<group>"; };
+		3FBD7AE41B4C5735009E291E /* TestTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTableViewCell.swift; sourceTree = "<group>"; };
 		8B13AC466269B3838D0E4E78 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FF866046D66208EC47BF7CED /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,6 +135,8 @@
 				3F4F8DF31B43165E005AD3CB /* ProductTableViewController.swift */,
 				3F9E15A61B41F9C600A8415D /* ViewController.swift */,
 				3F9E15A81B41F9C600A8415D /* Main.storyboard */,
+				3FBD7AE21B4C5323009E291E /* TestTableViewController.swift */,
+				3FBD7AE41B4C5735009E291E /* TestTableViewCell.swift */,
 				3F9E15AB1B41F9C600A8415D /* Images.xcassets */,
 				3F9E15AD1B41F9C600A8415D /* LaunchScreen.xib */,
 				3F9E15A21B41F9C600A8415D /* Supporting Files */,
@@ -344,6 +350,8 @@
 				3F4F8DFC1B4363AA005AD3CB /* ParseDBCommunicator.swift in Sources */,
 				3F4F8DF71B431FE9005AD3CB /* ProductTableViewCell.swift in Sources */,
 				3F4F8DF41B43165E005AD3CB /* ProductTableViewController.swift in Sources */,
+				3FBD7AE51B4C5735009E291E /* TestTableViewCell.swift in Sources */,
+				3FBD7AE31B4C5323009E291E /* TestTableViewController.swift in Sources */,
 				3F9E15A51B41F9C600A8415D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

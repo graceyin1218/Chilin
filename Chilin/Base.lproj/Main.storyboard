@@ -81,7 +81,9 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="productImageView" destination="6dt-NO-rT2" id="ioM-F0-4QM"/>
+                                    <outlet property="productDescription" destination="erV-Na-OAq" id="Tfj-ax-q6s"/>
+                                    <outlet property="productImageView" destination="6dt-NO-rT2" id="ugT-Qk-fQD"/>
+                                    <outlet property="productNameLabel" destination="W1d-O0-eiG" id="99A-qX-OKL"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -98,6 +100,70 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lhj-Yf-pf9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1095" y="402"/>
+        </scene>
+        <!--Test Table View Controller-->
+        <scene sceneID="2Gd-ll-m1i">
+            <objects>
+                <tableViewController id="ziW-4o-m46" customClass="TestTableViewController" customModule="Chilin" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="153" sectionHeaderHeight="22" sectionFooterHeight="22" id="Vge-Ue-R7t">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="C3U-4Z-XDY">
+                            <rect key="frame" x="-75" y="-17" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="ziW-4o-m46" id="jNh-tr-sFC"/>
+                            </connections>
+                        </searchBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="Cell" selectionStyle="default" indentationWidth="10" rowHeight="153" id="zcq-xg-ylM" customClass="TestTableViewCell" customModule="Chilin" customModuleProvider="target">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zcq-xg-ylM" id="K9I-TO-O7T">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T6z-yj-f0f">
+                                            <rect key="frame" x="279" y="65" width="46" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Works?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Im0-Bt-Fmx">
+                                            <rect key="frame" x="8" y="8" width="58" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="label" destination="T6z-yj-f0f" id="zKn-PY-L9h"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="ziW-4o-m46" id="Zvj-ay-kwK"/>
+                            <outlet property="delegate" destination="ziW-4o-m46" id="lpd-Vy-Mc7"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="searchBar" destination="C3U-4Z-XDY" id="7MC-Tv-ux8"/>
+                        <outlet property="searchDisplayController" destination="SlN-lY-xbu" id="GVU-K5-BKl"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6T1-lT-ooY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="SlN-lY-xbu">
+                    <connections>
+                        <outlet property="delegate" destination="ziW-4o-m46" id="emu-k3-Vpe"/>
+                        <outlet property="searchBar" destination="C3U-4Z-XDY" id="3zm-YI-pAB"/>
+                        <outlet property="searchContentsController" destination="ziW-4o-m46" id="rIq-xP-8jA"/>
+                        <outlet property="searchResultsDataSource" destination="ziW-4o-m46" id="15b-VO-BSV"/>
+                        <outlet property="searchResultsDelegate" destination="ziW-4o-m46" id="q6B-Jq-2xe"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="815" y="946"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">

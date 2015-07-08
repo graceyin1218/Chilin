@@ -23,23 +23,34 @@ class ProductTableViewCell: PFTableViewCell {
     {
         didSet
         {
-            println("cell didset product")
             updateUI()
         }
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?)
+    {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required init(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
     }
 
     func updateUI()
     {
-        productNameLabel?.text = ""
-        productImageView?.image = nil
-        productDescription?.text = ""
         
+        productNameLabel.text = ""
+        productImageView.image = nil
+        productDescription.text = ""
+
         if let product = self.product
         {
-            productNameLabel.text = product["name"] as? String
+            productNameLabel?.text = product["name"] as? String
+            
             if let description = product["description"] as? String
             {
-                productDescription.text = description
+                productDescription?.text = description
             }
             
             if let rawImage = product["image"] as? PFFile
@@ -50,7 +61,7 @@ class ProductTableViewCell: PFTableViewCell {
                     {
                         if let data = data
                         {
-                            self.productImageView.image = UIImage(data: data)
+                            self.productImageView?.image = UIImage(data: data)
                         }
                     }
                     
