@@ -8,21 +8,61 @@
 
 import UIKit
 import Foundation
+import Parse
+import ParseUI
 
 class ProductViewController: UIViewController
 {
-
+    @IBOutlet weak var productImageView: UIImageView!
+    @IBOutlet weak var productNameLabel: UILabel!
+    @IBOutlet weak var productCreatorLabel: UILabel!
+    @IBOutlet weak var productDescriptionLabel: UILabel!
+        
+    var product: PFObject?
+    
     required init(coder aDecoder: NSCoder)
     {
-        super.init(coder: NSCoder())
+        println("ProductViewController init")
+        
+        super.init(coder: aDecoder)
     }
     
+    override func viewDidLoad()
+    {
+        if product == nil
+        {
+            return
+        }
+        
+        productNameLabel.text = product!["name"] as? String
+        println("name")
+        println((product!["name"] as? String))
+        
+        productCreatorLabel.text = product!["creator"] as? String
+        
+        productDescriptionLabel.text = product!["description"] as? String
+        
+        if let rawImage = product!["image"] as? PFFile
+        {
+            rawImage.getDataInBackgroundWithBlock{
+                (data: NSData?, error: NSError?) -> Void in
+                if error == nil
+                {
+                    if let data = data
+                    {
+                        self.productImageView.image = UIImage(data: data)
+                    }
+                }
+            }
+        }
+    }
+
     //Needs Name, Image, Rating, (eventually comments)
-    
+
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     //on productTableViewCell click.
-    //will have to go into database for comments. 
+    //will have to go into database for comments.
         //(Which is when we really need the spinner)
     func displayProduct(name: String, _ image: UIImage?, _ rating: String?)
     {
@@ -31,6 +71,15 @@ class ProductViewController: UIViewController
         //fill in later?
         
         spinner?.stopAnimating()
+    }
+    
+// Segue
+    @IBAction func unwindSegue(sender: AnyObject)
+    {
+    }
+    @IBAction func goBack(segue: UIStoryboardSegue)
+    {
+        
     }
     
     

@@ -27,7 +27,14 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     required init(coder aDecoder: NSCoder)
     {
         super.init(coder:aDecoder)
+        
+/*       let image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://th01.deviantart.net/fs70/PRE/i/2011/237/b/2/15th_pokemon_anniversary_by_thebionicboi-d47seqk.png")!)!)
+        communicator.editProduct("Pokemon", image)  
+*/
+        
     }
+    
+    
 /*  Initializer if this is a PFQueryTableViewController
     required init(coder aDecoder: NSCoder)
     {
@@ -147,14 +154,28 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        // segue to product page!! /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        performSegueWithIdentifier("showProductDetail", sender: tableView.cellForRowAtIndexPath(indexPath))
     }
     
 // Prepare for Segue
+    //sender is the selected tableviewcell
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get new view controller using segue.destinationViewController
-        // Pass selected object to new view controller
+        
+        if segue.identifier == "showProductDetail"
+        {
+            // Get new view controller using segue.destinationViewController
+            var controller = segue.destinationViewController as! ProductViewController
+            
+            
+            // Pass selected object to new view controller
+            controller.product = sender!.product
+        }
     }
+
+    
+    
+    
+    
 
     
 // UISearchBarDelegate methods

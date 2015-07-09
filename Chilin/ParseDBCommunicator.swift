@@ -170,14 +170,37 @@ class ParseDBCommunicator {
         return true
     }
     
-    func editProduct(name: String?, _ image: UIImage?) -> Bool
+// enable description/comment editing later
+    //figure out how to get this to return the proper bool value (make it synchronous?)
+    func editProduct(name: String, _ image: UIImage?) -> Bool
     {
+        var query = PFQuery(className: "Products")
+        query.whereKey("name", equalTo: name)
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]?, error: NSError?) -> Void in
+            println(objects!.count)
+            if (error != nil)
+            {
+                return
+            }
+            if (objects == nil)
+            {
+                return
+            }
+            var product = objects![0] as! PFObject
+            if image != nil
+            {
+                var data = NSData(data: UIImageJPEGRepresentation(image, 1))
+                product["image"] = PFFile(data: data)
+            }
+            product.saveInBackground()
+        }
         
         return true
     }
     
 //TEST
-    func getProduct(name: String) -> (image: UIImage?, rating: String?)
+    func getProduct(name: String) -> PFObject?
     {
         currentRequestName = name
         
@@ -203,7 +226,7 @@ class ParseDBCommunicator {
             
                 //Should only be one object in objects
                 var product = objects![0] as! PFObject
-                var productImage = product["image"] as? PFFile
+/*                var productImage = product["image"] as? PFFile
                 
                 if let productImage = productImage
                 {
@@ -231,11 +254,16 @@ class ParseDBCommunicator {
                         rating = nil
                     }
                 }
+*/
+                dispatch_async(dispatch_get_main_queue()) {
+                    return product
+                }
             }
         }
-        return (image, rating)
+        return nil
     }
-    
+
+
 //Returns array of PFObjects that "fit" the query
     //guaranteed that the query is something. (not nil or "")
     //will be performed off the Main Queue.
