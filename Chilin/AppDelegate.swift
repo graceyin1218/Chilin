@@ -42,10 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window!.rootViewController = navigationVC
         window!.makeKeyAndVisible()
         
-*/
-        println("app did launch")
-
-        
+*/ 
         return true
     }
 

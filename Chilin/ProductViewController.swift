@@ -22,8 +22,6 @@ class ProductViewController: UIViewController
     
     required init(coder aDecoder: NSCoder)
     {
-        println("ProductViewController init")
-        
         super.init(coder: aDecoder)
     }
     
@@ -35,8 +33,6 @@ class ProductViewController: UIViewController
         }
         
         productNameLabel.text = product!["name"] as? String
-        println("name")
-        println((product!["name"] as? String))
         
         productCreatorLabel.text = product!["creator"] as? String
         
