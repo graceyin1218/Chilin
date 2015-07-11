@@ -69,14 +69,4 @@ class ProductViewController: UIViewController
         spinner?.stopAnimating()
     }
     
-// Segue
-    @IBAction func unwindSegue(sender: AnyObject)
-    {
-    }
-    @IBAction func goBack(segue: UIStoryboardSegue)
-    {
-        
-    }
-    
-    
 }

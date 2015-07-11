@@ -25,7 +25,7 @@ class ParseDBCommunicator {
 
 // FIGURE OUT SESSIONS
     
-    init ()
+    init()
     {
         Parse.setApplicationId("6NwZR4cwIpBICOO0bTwJNk9PfeKF2ka7o4Y6kxPf", clientKey: "8EKgXfp9RS7ZcqNmc3I0NX2Sr2fg9ANJaHtCSulQ")
         
@@ -135,7 +135,7 @@ class ParseDBCommunicator {
     
     var currentRequestName: String? = nil
 
-    func uploadProduct(name: String, _ image: UIImage?, _ rating: String?) -> Bool
+    func uploadProduct(name: String, _ image: UIImage?, _ description: String?) -> Bool
     {
         currentRequestName = name
         
@@ -160,9 +160,9 @@ class ParseDBCommunicator {
             var imageData = NSData(data: UIImageJPEGRepresentation(image, 1))
             newObject["image"] = PFFile(data: imageData)
         }
-        if let rating = rating
+        if let description = description
         {
-            newObject["rating"] = (rating as NSString).doubleValue
+            newObject["description"] = description
         }
         
         newObject.saveInBackground()
