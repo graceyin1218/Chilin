@@ -2,12 +2,13 @@
 
 
 Todo:
-- photo upload
+- Tags. (relations? Arrays of relations?)
 - PFSessions?
 - Comments
 - login screen
 
-
+Done:
+- photo upload
 
 
 
