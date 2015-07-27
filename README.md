@@ -5,11 +5,15 @@ Todo:
 - Tags. (relations? Arrays of relations?)
 - PFSessions?
 - Comments
-- login screen
+- "need email verification" screen
+- " + " button that segues to upload screen
+- *tab bar navigation*: home, profile, "feed," search, menu? (or should this go with profile?)
 
 Done:
-- photo upload
-
+- ~~photo upload~~
+- ~~login screen~~
+- ~~new account screen~~
+- ~~forgot password screen~~
 
 
 Original::
