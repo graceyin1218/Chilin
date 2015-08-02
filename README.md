@@ -1,5 +1,6 @@
 # Chilin
 
+Connects with Parse database. (username: live email address, password: what he set it as and can never remember)
 
 Todo:
 - Tags. (relations? Arrays of relations?)
