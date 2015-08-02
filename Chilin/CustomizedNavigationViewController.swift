@@ -10,6 +10,18 @@ import UIKit
 
 class CustomizedNavigationViewController: UINavigationController {
 
+    override func viewWillAppear(animated: Bool)
+    {
+        super.viewWillAppear(animated)
+    
+        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "createProduct")
+            
+        navigationItem.rightBarButtonItem = addButton
+        
+        //let backButton = UIBarButtonItem(barButtonSystemItem: .Back, target: self, action: "unwind")
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

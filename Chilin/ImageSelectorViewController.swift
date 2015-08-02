@@ -63,10 +63,10 @@ class ImageSelectorViewController: UIViewController, UIImagePickerControllerDele
 
     
 // ImagePicker delegates
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject: AnyObject])
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject])
     {
-        println("did finish picking media with info")
-        var image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        print("did finish picking media with info")
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         imageView.contentMode = .ScaleAspectFit
         imageView.image = image
         
@@ -75,7 +75,7 @@ class ImageSelectorViewController: UIViewController, UIImagePickerControllerDele
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController)
     {
-        println("did cancel")
+        print("did cancel")
         dismissViewControllerAnimated(true, completion: nil)
     }
     

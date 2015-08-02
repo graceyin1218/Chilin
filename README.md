@@ -4,17 +4,17 @@
 Todo:
 - Tags. (relations? Arrays of relations?)
 - PFSessions?
-- Comments
+- Comments (Database)
+- Comments (tableview)
+- forgot password screen
 - "need email verification" screen
-- " + " button that segues to upload screen
-- *tab bar navigation*: home, profile, "feed," search, menu? (or should this go with profile?)
+- tab bar controller 
 
 Done:
 - ~~photo upload~~
 - ~~login screen~~
 - ~~new account screen~~
-- ~~forgot password screen~~
-
+- ~~" + " button that segues to upload screen~~
 
 Original::
 

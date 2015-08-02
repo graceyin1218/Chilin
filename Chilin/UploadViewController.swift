@@ -48,7 +48,14 @@ class UploadViewController: UIViewController {
     @IBAction func upload()
     {
         let communicator = ParseDBCommunicator()
-        communicator.uploadProduct(nameField.text, imageView.image, descriptionField.text)
+        
+        if nameField.text == nil
+        {
+            //send user a fail message
+            return
+        }
+        
+        communicator.uploadProduct(nameField.text!, imageView.image, descriptionField.text)
     }
 
 // Segue to Image Selector

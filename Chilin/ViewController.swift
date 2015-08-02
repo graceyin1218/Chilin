@@ -17,8 +17,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        println("Current User")
-        println(PFUser.currentUser())
+        print("Current User")
+        print(PFUser.currentUser())
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -32,15 +32,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var passwordLoginField: UITextField!
     
     @IBAction func login() {
-        var worked = communicator.login(usernameLoginField.text, passwordLoginField.text)
-        println(worked)
+        if usernameLoginField.text == nil || passwordLoginField.text == nil
+        {
+            return
+        }
+        
+        let worked = communicator.login(usernameLoginField.text!, passwordLoginField.text!)
+        print(worked)
         if !(worked)
         {
-            println("Try again")
+            print("Try again")
         }
         else
         {
-            println("Logged in as " + PFUser.currentUser()!.username!)
+            print("Logged in as " + PFUser.currentUser()!.username!)
         }
     }
     
@@ -50,14 +55,19 @@ class ViewController: UIViewController {
 
 //remember to clear fields on UI once uploaded
     @IBAction func submitProduct() {
-        var worked = communicator.uploadProduct(nameField.text, imageView.image, ratingField.text)
+        if nameField.text == nil
+        {
+            print("No Name")
+            return
+        }
+        let worked = communicator.uploadProduct(nameField.text!, imageView.image, ratingField.text)
         if worked
         {
-            println("Added " + nameField.text)
+            print("Added " + nameField.text!)
         }
         else
         {
-            println("Failed miserably.")
+            print("Failed miserably.")
         }
     }
 
@@ -69,21 +79,27 @@ class ViewController: UIViewController {
     @IBOutlet weak var emailField: UITextField!
     
     @IBAction func createUser() {
-        var username = usernameField.text
-        var password = passwordField.text
-        var email = emailField.text
+        let username = usernameField.text
+        let password = passwordField.text
+        let email = emailField.text
         
-        var worked = communicator.createUser(username, password, email)
+        if username == nil || password == nil || email == nil
+        {
+            print("Something's nil")
+            return
+        }
+        
+        let worked = communicator.createUser(username!, password!, email!)
         
         if !worked
         {
 //replace with UI friendly version
-            println("Username already taken")
+            print("Username already taken")
         }
         else
         {
 //replace with UI friendly version
-            println("Successfully created user: " + username)
+            print("Successfully created user: " + username!)
         }
     }
     

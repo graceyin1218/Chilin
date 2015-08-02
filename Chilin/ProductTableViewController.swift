@@ -11,7 +11,7 @@ import Parse
 import ParseUI
 import UIKit
 
-class ProductTableViewController: UITableViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class ProductTableViewController: UITableViewController, UISearchBarDelegate {
     
     let communicator = ParseDBCommunicator()
  
@@ -24,14 +24,13 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
 
     //either initializer works. (assuming the class name changes accordingly)
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder:aDecoder)
         
 /*       let image = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://th01.deviantart.net/fs70/PRE/i/2011/237/b/2/15th_pokemon_anniversary_by_thebionicboi-d47seqk.png")!)!)
         communicator.editProduct("Pokemon", image)  
 */
-        
     }
     
     
@@ -62,9 +61,19 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     }
 */
     
+    
+    override func viewWillAppear(animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        
+        self.tableView.estimatedRowHeight = 110
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+    }
+    
     override func viewDidLayoutSubviews() {
         var viewbounds = self.view.bounds
-        var topBarOffset = self.topLayoutGuide.length
+        let topBarOffset = self.topLayoutGuide.length
         viewbounds.origin.y = topBarOffset * -1
         self.view.bounds = viewbounds
     }
@@ -82,11 +91,17 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     
     func refresh()
     {
-        if !searchBar.text.isEmpty
+        print("Refreshing")
+        if searchBar.text == nil
         {
-            var qos = QOS_CLASS_USER_INITIATED
-            dispatch_async(dispatch_get_global_queue(Int(qos.value), 0)) { () -> Void in
-                var results = self.communicator.getProducts(self.searchBar.text)
+            print("Searchbar.text is nil")
+            return
+        }
+        if !searchBar.text!.isEmpty
+        {
+            let qos = QOS_CLASS_USER_INITIATED
+            dispatch_async(dispatch_get_global_queue(qos, 0)) { () -> Void in
+                let results = self.communicator.getProducts(self.searchBar.text!)
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
                     self.productsToDisplay = results
                     self.tableView.reloadData()
@@ -116,7 +131,7 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell // ProductTableViewCell
     {
-        var cell: ProductTableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! ProductTableViewCell
+        let cell: ProductTableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! ProductTableViewCell
         
         //what happens if we request more rows than we have objects?
         if self.productsToDisplay != nil
@@ -144,13 +159,13 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     
 // UITableViewDelegate methods
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]?
+/*    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]?
     {
         // bookmark
         // what else?
         return nil
     }
-   
+*/
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
@@ -161,21 +176,30 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate, UI
     //sender is the selected tableviewcell
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        if segue.identifier == "showProductDetail"
+        switch segue.identifier
         {
-            // Get new view controller using segue.destinationViewController
-            var controller = segue.destinationViewController as! ProductViewController
+            case nil:
+                break
             
+            case "showProductDetail"?:
+                // Get new view controller using segue.destinationViewController
+                let controller = segue.destinationViewController as! ProductViewController
             
-            // Pass selected object to new view controller
-            controller.product = sender!.product
+                // Pass selected object to new view controller
+                controller.product = sender!.product
+    
+            case "createNewProduct"?:
+                break
+            
+            default:
+                break
         }
     }
 
-    
-    
-    
-    
+    func createNewProduct()
+    {
+        performSegueWithIdentifier("createNewProduct", sender: self)
+    }
 
     
 // UISearchBarDelegate methods

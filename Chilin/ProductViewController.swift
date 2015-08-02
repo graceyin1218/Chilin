@@ -20,7 +20,7 @@ class ProductViewController: UIViewController
         
     var product: PFObject?
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
@@ -53,7 +53,7 @@ class ProductViewController: UIViewController
         }
     }
 
-    //Needs Name, Image, Rating, (eventually comments)
+    //Needs Name, Image, Description, (eventually comments)
 
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     

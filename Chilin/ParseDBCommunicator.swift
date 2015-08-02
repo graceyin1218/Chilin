@@ -31,7 +31,7 @@ class ParseDBCommunicator {
         
         //check for cached user
         
-        var currentUser = PFUser.currentUser()
+        let currentUser = PFUser.currentUser()
         
         if currentUser == nil
         {
@@ -49,21 +49,19 @@ class ParseDBCommunicator {
     
     func createUser(u: String, _ p: String, _ e: String) -> Bool
     {
-        var user = PFUser()
+        let user = PFUser()
         user.username = u
         user.password = p
         user.email = e
         
-        var worked = user.signUp()
+        let worked = user.signUp()
         
         return worked
     }
     
     func login(username: String, _ password: String) -> Bool
     {
-        var worked: Bool = false
-        
-        var person = PFUser.logInWithUsername(username, password: password)
+        let person = PFUser.logInWithUsername(username, password: password)
         
         if person == nil
         {
@@ -77,7 +75,7 @@ class ParseDBCommunicator {
 //TEST
     func changePassword(currentPass: String, _ newPass: String) -> Bool
     {
-        var user = PFUser.currentUser()
+        let user = PFUser.currentUser()
         if user != nil
         {
             if user!.password != currentPass
@@ -94,7 +92,7 @@ class ParseDBCommunicator {
 //TEST
     func changeEmail(newEmail: String) -> Bool
     {
-        var user = PFUser.currentUser()
+        let user = PFUser.currentUser()
         if user != nil
         {
             user!.email = newEmail
@@ -112,14 +110,46 @@ class ParseDBCommunicator {
         loggedin = false
     }
     
-//TEST
-    func forgotPassword(username: String) -> Bool
+    
+    
+    func usernameExists(username: String) -> Bool
     {
-        var query = PFQuery(className: "User")
+        let query = PFQuery(className: "User")
+        query.whereKey("username", equalTo: username)
+        
+        let users = query.findObjects()
+        
+        if users == nil || users!.count == 0
+        {
+            return false
+        }
+        return true
+    }
+    
+    func emailExists(email: String) -> Bool
+    {
+        let query = PFQuery(className: "User")
+        query.whereKey("email", equalTo: email)
+        
+        let users = query.findObjects()
+        
+        if users == nil || users!.count == 0
+        {
+            return false
+        }
+        return true
+    }
+    
+    
+    
+//TEST
+    func requestPasswordResetForUsername(username: String) -> Bool
+    {
+        let query = PFQuery(className: "User")
         query.whereKey("username", equalTo: username)
         
         
-        var users = query.findObjects()
+        let users = query.findObjects()
         
         if users == nil || users!.count != 1
         {
@@ -129,6 +159,13 @@ class ParseDBCommunicator {
         
         return true
     }
+    
+//Test
+    func requestPasswordResetForEmail(email: String) -> Bool
+    {
+        return PFUser.requestPasswordResetForEmail(email)
+    }
+    
     
 // Products
     //need to be logged in to upload, edit, or delete product.
@@ -140,7 +177,7 @@ class ParseDBCommunicator {
         currentRequestName = name
         
         //if name exists, don't create
-        var query = PFQuery(className: "Products")
+        let query = PFQuery(className: "Products")
         query.whereKey("name", equalTo: name)
         
         var objects = query.findObjects()
@@ -157,7 +194,7 @@ class ParseDBCommunicator {
         
         if let image = image
         {
-            var imageData = NSData(data: UIImageJPEGRepresentation(image, 1))
+            let imageData = NSData(data: UIImageJPEGRepresentation(image, 1)!)
             newObject["image"] = PFFile(data: imageData)
         }
         if let description = description
@@ -174,11 +211,11 @@ class ParseDBCommunicator {
     //figure out how to get this to return the proper bool value (make it synchronous?)
     func editProduct(name: String, _ image: UIImage?) -> Bool
     {
-        var query = PFQuery(className: "Products")
+        let query = PFQuery(className: "Products")
         query.whereKey("name", equalTo: name)
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
-            println(objects!.count)
+            print(objects!.count)
             if (error != nil)
             {
                 return
@@ -187,10 +224,10 @@ class ParseDBCommunicator {
             {
                 return
             }
-            var product = objects![0] as! PFObject
+            let product = objects![0] as! PFObject
             if image != nil
             {
-                var data = NSData(data: UIImageJPEGRepresentation(image, 1))
+                let data = NSData(data: UIImageJPEGRepresentation(image!, 1)!)
                 product["image"] = PFFile(data: data)
             }
             product.saveInBackground()
@@ -204,17 +241,14 @@ class ParseDBCommunicator {
     {
         currentRequestName = name
         
-        var image: UIImage? = nil
-        var rating: String? = nil
-        
-        let qos = Int(QOS_CLASS_USER_INITIATED.value)
+        let qos = QOS_CLASS_USER_INITIATED
         dispatch_async(dispatch_get_global_queue(qos, 0)) {() -> Void in
         
-            var query = PFQuery(className: "Products")
+            let query = PFQuery(className: "Products")
             query.whereKey("name", equalTo: name)
             query.findObjectsInBackgroundWithBlock {
                 (objects: [AnyObject]?, error: NSError?) -> Void in
-                println(objects!.count)
+                print(objects!.count)
                 if (error != nil)
                 {
                     return
@@ -225,7 +259,7 @@ class ParseDBCommunicator {
                 }
             
                 //Should only be one object in objects
-                var product = objects![0] as! PFObject
+                let product = objects![0] as! PFObject
 /*                var productImage = product["image"] as? PFFile
                 
                 if let productImage = productImage
@@ -271,7 +305,7 @@ class ParseDBCommunicator {
     func getProducts(search: String) -> [PFObject]?
     {
         
-        var query = PFQuery(className: "Products")
+        let query = PFQuery(className: "Products")
 //Will improve searching later
         query.whereKey("name", containsString: search)
         
