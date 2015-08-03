@@ -22,6 +22,7 @@
 		3F9E15AF1B41F9C600A8415D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F9E15AD1B41F9C600A8415D /* LaunchScreen.xib */; };
 		3F9E15BB1B41F9C600A8415D /* ChilinTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9E15BA1B41F9C600A8415D /* ChilinTests.swift */; };
 		3FB8B43C1B6D957B00E593AB /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8B43B1B6D957B00E593AB /* CommentTableViewCell.swift */; };
+		3FB8B43E1B6EA97A00E593AB /* CommentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB8B43D1B6EA97A00E593AB /* CommentTableViewController.swift */; };
 		3FBD7ADB1B487B25009E291E /* libPods-Bolts.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FBD7ADA1B487B25009E291E /* libPods-Bolts.a */; };
 		3FBD7ADD1B487B29009E291E /* libPods-Parse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FBD7ADC1B487B29009E291E /* libPods-Parse.a */; };
 		3FBD7ADF1B487B2C009E291E /* libPods-ParseUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FBD7ADE1B487B2C009E291E /* libPods-ParseUI.a */; };
@@ -83,6 +84,7 @@
 		3F9E15B91B41F9C600A8415D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F9E15BA1B41F9C600A8415D /* ChilinTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChilinTests.swift; sourceTree = "<group>"; };
 		3FB8B43B1B6D957B00E593AB /* CommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		3FB8B43D1B6EA97A00E593AB /* CommentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTableViewController.swift; sourceTree = "<group>"; };
 		3FBD7ADA1B487B25009E291E /* libPods-Bolts.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Bolts.a"; path = "Pods/../build/Debug-iphoneos/libPods-Bolts.a"; sourceTree = "<group>"; };
 		3FBD7ADC1B487B29009E291E /* libPods-Parse.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Parse.a"; path = "Pods/../build/Debug-iphoneos/libPods-Parse.a"; sourceTree = "<group>"; };
 		3FBD7ADE1B487B2C009E291E /* libPods-ParseUI.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-ParseUI.a"; path = "Pods/../build/Debug-iphoneos/libPods-ParseUI.a"; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				3F896E981B55F7F300E1FC38 /* NewAccountViewController.swift */,
 				3FBD7AE81B4F1824009E291E /* ImageSelectorViewController.swift */,
 				3FB8B43B1B6D957B00E593AB /* CommentTableViewCell.swift */,
+				3FB8B43D1B6EA97A00E593AB /* CommentTableViewController.swift */,
 				3F9E15AB1B41F9C600A8415D /* Images.xcassets */,
 				3F9E15AD1B41F9C600A8415D /* LaunchScreen.xib */,
 				3F9E15A21B41F9C600A8415D /* Supporting Files */,
@@ -369,6 +372,7 @@
 				3FD90FBB1B55C04E00144136 /* LoginViewController.swift in Sources */,
 				3F5C7E1B1B45AA7B00BCAC95 /* ProductViewController.swift in Sources */,
 				3FBD7AE71B4E00E3009E291E /* UploadViewController.swift in Sources */,
+				3FB8B43E1B6EA97A00E593AB /* CommentTableViewController.swift in Sources */,
 				3F896E991B55F7F300E1FC38 /* NewAccountViewController.swift in Sources */,
 				3F9E15A71B41F9C600A8415D /* ViewController.swift in Sources */,
 				3F3A23501B58A9570096D509 /* CustomizedNavigationViewController.swift in Sources */,

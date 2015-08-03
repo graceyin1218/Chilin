@@ -18,15 +18,27 @@ class ProductViewController: UIViewController
     @IBOutlet weak var productCreatorLabel: UILabel!
     @IBOutlet weak var productDescriptionLabel: UILabel!
         
+    @IBOutlet weak var tableView: UITableView!
+    
     var product: PFObject?
+    
+    let tableViewController = CommentTableViewController()
+    
     
     required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func viewDidLoad()
     {
+        tableView.dataSource = tableViewController
+        tableView.delegate = tableViewController
+        
         if product == nil
         {
             return

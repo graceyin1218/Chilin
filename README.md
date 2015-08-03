@@ -7,15 +7,16 @@ Todo:
 - PFSessions?
 - Comments (Database)
 - Comments (tableview)
-- forgot password screen
 - "need email verification" screen
 - tab bar controller 
+- when search table initially displayed, make rowHeight correct
 
 Done:
 - ~~photo upload~~
 - ~~login screen~~
 - ~~new account screen~~
 - ~~" + " button that segues to upload screen~~
+- ~~forgot password screen~~
 
 Original::
 

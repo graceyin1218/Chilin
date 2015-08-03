@@ -84,17 +84,17 @@ class ProductTableViewController: UITableViewController, UISearchBarDelegate {
     {
         super.viewDidLoad()
         
+        //Why do I need this again?
         self.edgesForExtendedLayout = UIRectEdge.None
         
-        refresh()
+        tableView.reloadData()
+        //refresh()
     }
     
     func refresh()
     {
-        print("Refreshing")
         if searchBar.text == nil
         {
-            print("Searchbar.text is nil")
             return
         }
         if !searchBar.text!.isEmpty

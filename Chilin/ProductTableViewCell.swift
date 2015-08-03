@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Grace Yin. All rights reserved.
 //
 
+// Restore ID: Cell
+
 import UIKit
 import Parse
 import ParseUI
