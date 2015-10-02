@@ -1,6 +1,6 @@
 # Chilin
 
-Connects with Parse database. (username: live email address, password: what he set it as and can never remember)
+Connects with Parse database. (username: live email address, password: what *someone* set it as and can never remember -_- )
 
 Todo:
 - Tags. (relations? Arrays of relations?)
@@ -18,7 +18,11 @@ Done:
 - ~~" + " button that segues to upload screen~~
 - ~~forgot password screen~~
 
-Original::
+
+
+
+
+Original:: 
 
 iOS 8 app that can interact with a MongoDB database.
 
